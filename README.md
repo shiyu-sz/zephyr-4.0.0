@@ -35,3 +35,9 @@
 编译：west build -p always -b stm32f401_mini samples/basic/blinky  
 
 生成的hex文件在：build/zephyr/zephyr.hex  
+
+安装Linux版本的jlink：sudo dpkg -i JLink_Linux_V870_x86_64.deb  
+
+将jlink链接到环境变量目录：sudo ln -s /opt/SEGGER/Flasher/JLinkExe /usr/local/bin/  
+
+使用jlink下载：west flash -r jlink  
