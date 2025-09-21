@@ -20,6 +20,18 @@
  */
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
+#define APP_TASK_STACK_SIZE (1024)
+K_THREAD_STACK_DEFINE(thread_stack, APP_TASK_STACK_SIZE);
+static struct k_thread thread_data;
+
+void app_task(void *arg1, void *arg2, void *arg3)
+{
+	while (1) {
+		printf("app_task!\n");
+		k_msleep(1000);
+	}
+}
+
 int main(void)
 {
 	int ret;
@@ -33,6 +45,9 @@ int main(void)
 	if (ret < 0) {
 		return 0;
 	}
+
+	k_thread_create(&thread_data, thread_stack, APP_TASK_STACK_SIZE,
+		app_task, NULL, NULL, NULL, K_PRIO_COOP(7), 0, K_NO_WAIT);
 
 	while (1) {
 		ret = gpio_pin_toggle_dt(&led);
